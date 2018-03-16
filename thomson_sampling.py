@@ -54,7 +54,6 @@ if __name__ == "__main__":
         if iter % 100 == 0:
             print(iter, "th iteration - success / fail : ", str(num_s/num_f)[:5])
 
-
     print(count_list)
     print(tb.S)
     print(tb.F)
