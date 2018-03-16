@@ -7,6 +7,7 @@ class ContextualBandit:
         # gaussian 에서 뽑은 숫자 보다 작아야 reward가 1이기 때문에 각 bandit에서 숫자가 가장 작은 index의 arm을
         # 당기는 것이 최적입니다.
         self.bandits = np.array([[0.2, 0., 0., -5], [0.1, -5, 1., 0.25], [-5., 5., 5., 5.]])
+        # state 0 -> 3 state 1 -> 1 state 2 -> 1 이 최적
         self.num_bandits = np.shape(self.bandits)[0]
         self.num_actions = np.shape(self.bandits)[1]
 
@@ -30,3 +31,10 @@ if __name__ == "__main__":
     print("The number of bandits", cb.num_bandits)
     print("The number of actions", cb.num_actions)
     print("chosen bandit :", cb.get_bandit())
+    total_reward = 0
+    for i in range(100):
+        cb.state = 2
+        reward = cb.pull_arm(0)
+        total_reward += reward
+
+    print(total_reward)

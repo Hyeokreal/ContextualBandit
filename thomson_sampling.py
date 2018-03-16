@@ -3,14 +3,14 @@ from ContextualBandit import ContextualBandit
 
 
 class ThompsonBandit:
-    def __init__(self, CB):
-        self.alpha = 1
-        self.beta = 1
-        self.num_bandits = CB.num_bandits
-        self.num_actions = CB.num_actions
+    def __init__(self, num_bandits, num_actions):
+        self.alpha = 0.1
+        self.beta = 0.1
+        self.num_bandits = num_bandits
+        self.num_actions = num_actions
 
-        self.S = [[0] * self.num_actions] * self.num_bandits  # index 0 -> Success, index 1 - > Fail
-        self.F = [[0] * self.num_actions] * self.num_bandits
+        self.S = [[0 for _ in range(num_actions)] for _ in range(num_bandits)]
+        self.F = [[0 for _ in range(num_actions)] for _ in range(num_bandits)]
 
     def get_action(self, state):
         thetas = [np.random.beta(self.S[state][i] + self.alpha,
@@ -27,15 +27,22 @@ class ThompsonBandit:
 
 
 if __name__ == "__main__":
-    cb = ContextualBandit()
-    tb = ThompsonBandit(cb)
+    '''
+    self.bandits = np.array([[0.2, 0., 0., -5], [0.1, -5, 1., 0.25], [-5., 5., 5., 5.]])
+    '''
 
+    cb = ContextualBandit()
+    tb = ThompsonBandit(cb.num_bandits, cb.num_actions)
+
+    count_list = [[0 for _ in range(cb.num_actions)] for _ in range(cb.num_bandits)]
     num_s, num_f = 0, 1
 
     for iter in range(10000):
         state = cb.get_bandit()
         action = tb.get_action(state)
         reward = cb.pull_arm(action)
+
+        count_list[state][action] += 1
 
         if reward > 0:
             tb.set_s(state, action)
@@ -46,3 +53,8 @@ if __name__ == "__main__":
 
         if iter % 100 == 0:
             print(iter, "th iteration - success / fail : ", str(num_s/num_f)[:5])
+
+
+    print(count_list)
+    print(tb.S)
+    print(tb.F)
