@@ -29,6 +29,7 @@ class ThompsonBandit:
 if __name__ == "__main__":
     '''
     self.bandits = np.array([[0.2, 0., 0., -5], [0.1, -5, 1., 0.25], [-5., 5., 5., 5.]])
+    self.bandits = np.array([[0., 0.2, -0.1, -0.4], [0.1, -0.5, 0., -0.3], [-0.1, 0., 0., -0.05]])
     '''
 
     cb = ContextualBandit()
@@ -37,7 +38,7 @@ if __name__ == "__main__":
     count_list = [[0 for _ in range(cb.num_actions)] for _ in range(cb.num_bandits)]
     num_s, num_f = 0, 1
 
-    for iter in range(10000):
+    for itr in range(10000):
         state = cb.get_bandit()
         action = tb.get_action(state)
         reward = cb.pull_arm(action)
@@ -51,7 +52,7 @@ if __name__ == "__main__":
             tb.set_f(state,action)
             num_f += 1
 
-        if iter % 100 == 0:
+        if itr % 100 == 0:
             print(iter, "th iteration - success / fail : ", str(num_s/num_f)[:5])
 
     print(count_list)
