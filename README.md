@@ -28,5 +28,5 @@ Also, if you want to solve problem by Neural Network.
 
 ## TODO
 
-> implementation of NB2
-> Modification of SGD in NB1
+- implementation of NB2
+- Modification of SGD in NB1
